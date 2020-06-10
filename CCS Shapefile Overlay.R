@@ -22,7 +22,7 @@ BBSvalues$geometry <- NULL
 BBSvalues <- unlist(BBSvalues)
 BBSvalues <- str_replace_all(BBSvalues, "[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]", "")
 BBSvalues <- str_replace_all(BBSvalues, "[1234567890]", "")
-BBSvalues <- str_replace_all(BBSvalues, "[-'._È]", "")
+BBSvalues <- str_replace_all(BBSvalues, "[-'._Ãˆ]", "")
 BBSvalues <- str_replace_all(BBSvalues, "[ ]", "")
 BBSvalues <- paste(BBSvalues, "1")
 BBSvalues <- as.integer(BBSvalues)
@@ -31,7 +31,9 @@ BBSroutes[, "value"] <- BBSvalues
 remove(BBSvalues)
 BBSroutes$Name <- NULL
 
-BBSroutes <- raster(BBSroutes)
+#BBSroutes <- raster(BBSroutes) ?
+#rasterize?
+
 plot(BBSroutes)
 BBSroutes <- buffer(BBSroutes, 5000)
 
