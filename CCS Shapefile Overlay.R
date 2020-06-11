@@ -1,10 +1,8 @@
 #requires Rtools
 #requires JAGS
 
-# install.packages("devtools")
-# devtools::install_github("BrandonEdwards/bbsBayes", ref = "v2.0.0") 
 
-install.packages("bbsBayes") # our package is now on CRAN
+install.packages("bbsBayes") 
 library(bbsBayes)
 library(tidyverse)
 library(raster)
@@ -34,11 +32,13 @@ BBSroutes[, "value"] <- BBSvalues
 remove(BBSvalues)
 BBSroutes$Name <- NULL
 
-#BBSroutes <- raster(BBSroutes) ?
-#rasterize?
 
 plot(BBSroutes)
-BBSroutes <- buffer(BBSroutes, 5000)
+BBSroutes <- st_as_sf(BBSroutes)
+BBSroutes <- st_buffer(BBSroutes, 5000)
+#Not really sure if this worked the way it should?
+### In st_buffer.sfc(st_geometry(x), dist, nQuadSegs, endCapStyle = endCapStyle,  : st_buffer does not correctly buffer longitude/latitude data
+### I've looked up this error...still not sure exactly how it works but it has something to do with the coordinates 
 
 CCS1991 <- st_read(dsn = ".", layer = "1991CCS")
 
@@ -52,11 +52,11 @@ CCS2011 <- st_read(dsn = ".", layer = "2011CCS")
 
 CCS2016 <- st_read(dsn = ".", layer = "2016CCS")
 
-# overlay1991 <- overlay(BBSroutes, CCS1991, fun=function(x, y){return(x*y)})
-# plot(overlay1991)
 
 overlay1991 <- st_union(BBSroutes,CCS1991)
 ### assuming the projections are correctly interpreted and recorded in the files, this should work
+### Error in geos_op2_geom("union", x, y) : st_crs(x) == st_crs(y) is not TRUE
+
 
 ## some useful guidance on plotting sf objects
 #https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html 
@@ -65,3 +65,5 @@ overlay1991 <- st_union(BBSroutes,CCS1991)
 plot.test = ggplot()+
   geom_sf(data = BBSroutes)+
   geom_sf(data = CCS1991,colour = "red")
+
+
