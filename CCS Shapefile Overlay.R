@@ -34,8 +34,11 @@ BBSroutes$Name <- NULL
 
 
 plot(BBSroutes)
+BBSroutes <- st_as_sf(BBSroutes)
 BBSroutes <- st_buffer(BBSroutes, 5000)
 #Not really sure if this worked the way it should?
+### In st_buffer.sfc(st_geometry(x), dist, nQuadSegs, endCapStyle = endCapStyle,  : st_buffer does not correctly buffer longitude/latitude data
+### I've looked up this error...still not sure exactly how it works but it has something to do with the coordinates 
 
 CCS1991 <- st_read(dsn = ".", layer = "1991CCS")
 
@@ -62,4 +65,5 @@ overlay1991 <- st_union(BBSroutes,CCS1991)
 plot.test = ggplot()+
   geom_sf(data = BBSroutes)+
   geom_sf(data = CCS1991,colour = "red")
+
 
