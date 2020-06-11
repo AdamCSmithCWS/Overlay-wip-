@@ -2,13 +2,13 @@
 #requires JAGS
 
 
-install.packages("bbsBayes") 
+#install.packages("bbsBayes") 
 library(bbsBayes)
 library(tidyverse)
 library(raster)
-install.packages("sf")
+#install.packages("sf")
 library(sf)
-install.packages("rgeos")
+#install.packages("rgeos")
 library(rgeos)
 library(landscapemetrics)
 library(landscapetools)
@@ -76,6 +76,18 @@ CCS2016 <- st_read(dsn = "maps", layer = "2016CCS")
 CCS1991_laea = st_transform(CCS1991,
                                   crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
 
+
+plot.test = ggplot()+
+  geom_sf(data = CCS1991_laea,colour = "red")+
+  geom_sf(data = bbs_laea)
+
+print(plot.test)
+
+
+
+
+
+
 overlay1991 <- st_union(bbs_laea,CCS1991_laea)
 ### this shoudl work now.
 ### assuming the projections are correctly interpreted and recorded in the files, this should work
@@ -86,8 +98,5 @@ overlay1991 <- st_union(bbs_laea,CCS1991_laea)
 #https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html 
 
 
-plot.test = ggplot()+
-  geom_sf(data = BBSroutes)+
-  geom_sf(data = CCS1991,colour = "red")
 
 
