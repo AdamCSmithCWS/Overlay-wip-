@@ -76,6 +76,21 @@ CCS2016 <- st_read(dsn = "maps", layer = "2016CCS")
 CCS1991_laea = st_transform(CCS1991,
                                   crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
 
+CCS1996_laea = st_transform(CCS1996,
+                            crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
+
+CCS2001_laea = st_transform(CCS2001,
+                            crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
+
+CCS2006_laea = st_transform(CCS2006,
+                            crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
+
+CCS2011_laea = st_transform(CCS2011,
+                            crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
+
+CCS2016_laea = st_transform(CCS2016,
+                            crs = "+proj=laea +x_0=0 +y_0=0 +lon_0=-90 +lat_0=50")
+
 
 plot.test = ggplot()+
   geom_sf(data = CCS1991_laea,colour = "red")+
@@ -86,11 +101,27 @@ print(plot.test)
 
 
 
+### trying an intersection instead of a union - this should be more efficient because it removes/ignores the non-overlapping areas
 
+overlay1991 <- st_intersection(bbs_laea,CCS1991_laea)
+overlay1996 <- st_intersection(bbs_laea,CCS1996_laea)
+overlay2001 <- st_intersection(bbs_laea,CCS2001_laea)
+overlay2006 <- st_intersection(bbs_laea,CCS2006_laea)
+overlay2011 <- st_intersection(bbs_laea,CCS2011_laea)
+overlay2016 <- st_intersection(bbs_laea,CCS2016_laea)
 
-overlay1991 <- st_union(bbs_laea,CCS1991_laea)
+overlays <- list(o1991 = overlay1991,
+                 o1996 = overlay1996,
+                 o2001 = overlay2001,
+                 o2006 = overlay2006,
+                 o2011 = overlay2011,
+                 o2016 = overlay2016)
+
+save(list = c("overlays"),file = "Intersection_overlays.RData")
+
 ### this shoudl work now.
-### assuming the projections are correctly interpreted and recorded in the files, this should work
+
+
 ### Error in geos_op2_geom("union", x, y) : st_crs(x) == st_crs(y) is not TRUE
 ### so this error is telling you that the "crs" (coordinate reference system) are different for the two spatial objects
 
